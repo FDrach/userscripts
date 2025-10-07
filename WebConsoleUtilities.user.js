@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Web Console Utilities
 // @match        *://*/*
-// @version      1.3
+// @version      1.4
 // @description  Injects some helper functions into the window object, making them accessible in the developer console for any website.
 // @author       Drachenberg Franco
 // @grant        unsafeWindow
@@ -17,10 +17,10 @@
     const Base16={encode:function(plainText=""){return plainText.split("").map((c)=> c.charCodeAt(0).toString(16).padStart(2,"0")).join("");},decode:function(hexString=""){const hexPairs=hexString.match(/.{1,2}/g)||[];return hexPairs.map((c)=> String.fromCharCode(parseInt(c,16))).join("");},};
     const range=function(start, stop, step){if(stop===undefined){stop=start;start=0;}step=step || 1;const result=[];if(step>0){for(let i=start;i<stop;i+=step){result.push(i);}}else{for(let i=start;i>stop;i+=step){result.push(i);}}return result;};
     const dedup=(array) => [...new Set(array)];
-    const getUrls=(includes="", returnAs=console)=>{const urls=Array.from(document.getElementsByTagName("a")).filter((e)=>{return e.href.includes(includes);}).map((e)=>{return e.href;});switch (returnAs){case String:return urls.join("\n");break;case Array:return urls;break;case console:default:return urls.join("\n");break;}console.log(urls.join("\n"));};
-    const sorted = (array) => [...array].sort((a,b)=>a-b);
+    const getUrls=(includes="", returnAs=console)=>{const urls=Array.from(document.getElementsByTagName("a")).filter((e)=>{return e.href.includes(includes);}).map((e)=>{return e.href;});switch (returnAs){case String:return urls.join("\n");break;case Array:return urls;break;case console:default:}console.log(urls.join("\n"));};
+    const sorted=(array)=>[...array].sort((a,b)=>a-b);
 
-    const functions = ["Base64", "Base16", "range", "getAllUrls", "dedup", "sorted"];
+    const functions = ["Base64", "Base16", "range", "getUrls", "dedup", "sorted"];
     if (typeof unsafeWindow.InjectedFunctions === 'undefined') {
         unsafeWindow.InjectedFunctions = true;
             functions.forEach(func => {
@@ -29,7 +29,6 @@
     }
 
 })();
-
 
 
 
